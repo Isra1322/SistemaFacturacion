@@ -28,6 +28,9 @@ namespace SistemaFacturacion.Application.Services
             if (cliente == null)
                 throw new Exception("Cliente no existe");
 
+            if (dto.Detalles == null || !dto.Detalles.Any())
+                throw new Exception("La factura debe tener al menos un producto");
+
             // 🔹 2. Crear factura
             var factura = new Factura
             {
@@ -37,7 +40,7 @@ namespace SistemaFacturacion.Application.Services
                 DetallesFactura = new List<DetalleFactura>()
             };
 
-            decimal totalFactura = 0;
+            decimal subtotalFactura = 0;
 
             // 🔹 3. Recorrer detalles
             foreach (var item in dto.Detalles)
@@ -53,7 +56,7 @@ namespace SistemaFacturacion.Application.Services
                 if (producto.Stock < item.Cantidad)
                     throw new Exception($"Stock insuficiente para {producto.Nombre}");
 
-                // 🔹 4. Calcular
+                // 🔹 4. Calcular total por línea
                 decimal totalLinea = producto.Precio * item.Cantidad;
 
                 // 🔹 5. Crear detalle
@@ -71,11 +74,13 @@ namespace SistemaFacturacion.Application.Services
                 producto.Stock -= item.Cantidad;
                 await _productoRepository.ActualizarAsync(producto);
 
-                totalFactura += totalLinea;
+                subtotalFactura += totalLinea;
             }
 
-            // 🔹 7. Total
-            factura.Total = totalFactura;
+            // 🔹 7. Calcular Subtotal, IVA y Total
+            factura.Subtotal = Math.Round(subtotalFactura, 2);
+            factura.Iva = Math.Round(factura.Subtotal * 0.15m, 2);
+            factura.Total = Math.Round(factura.Subtotal + factura.Iva, 2);
 
             // 🔹 8. Guardar factura
             await _facturaRepository.AgregarAsync(factura);

@@ -58,10 +58,14 @@ namespace SistemaFacturacion.Application.Services
                             }
                         });
 
-                        column.Item().AlignRight().PaddingTop(10)
-                            .Text($"TOTAL: ${factura.Total:F2}")
-                            .Bold()
-                            .FontSize(14);
+                        column.Item().AlignRight().PaddingTop(10).Column(resumen =>
+                        {
+                            resumen.Item().Text($"Subtotal: ${factura.Subtotal:F2}");
+                            resumen.Item().Text($"IVA (15%): ${factura.Iva:F2}");
+                            resumen.Item().Text($"TOTAL: ${factura.Total:F2}")
+                                .Bold()
+                                .FontSize(14);
+                        });
                     });
                 });
             }).GeneratePdf();

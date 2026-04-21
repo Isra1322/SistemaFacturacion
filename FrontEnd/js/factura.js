@@ -18,6 +18,8 @@ const API_FACTURA = "http://localhost:5161/api/Factura";
 const btnGuardarFactura = document.getElementById("btnGuardarFactura");
 
 const detalleFacturaBody = document.getElementById("detalleFacturaBody");
+const subtotalFacturaTexto = document.getElementById("subtotalFactura");
+const ivaFacturaTexto = document.getElementById("ivaFactura");
 const totalFacturaTexto = document.getElementById("totalFactura");
 
 let clienteSeleccionado = null;
@@ -153,10 +155,10 @@ btnAgregarProducto.addEventListener("click", () => {
 function renderDetalleFactura() {
   detalleFacturaBody.innerHTML = "";
 
-  let totalGeneral = 0;
+  let subtotal = 0;
 
   detalleFactura.forEach((item, index) => {
-    totalGeneral += item.totalLinea;
+    subtotal += item.totalLinea;
 
     const fila = document.createElement("tr");
     fila.innerHTML = `
@@ -170,7 +172,12 @@ function renderDetalleFactura() {
     detalleFacturaBody.appendChild(fila);
   });
 
-  totalFacturaTexto.textContent = `$${totalGeneral.toFixed(2)}`;
+  const iva = subtotal * 0.15;
+  const total = subtotal + iva;
+
+  subtotalFacturaTexto.textContent = `$${subtotal.toFixed(2)}`;
+  ivaFacturaTexto.textContent = `$${iva.toFixed(2)}`;
+  totalFacturaTexto.textContent = `$${total.toFixed(2)}`;
 }
 
 window.eliminarDetalle = function(index) {

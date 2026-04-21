@@ -6,7 +6,12 @@ namespace SistemaFacturacion.Domain.Entities
         public int NumeroFactura { get; set; }
         public DateTime Fecha { get; set; }
         public int IdCliente { get; set; }
+
+
+        public decimal Subtotal { get; set; }
+        public decimal Iva { get; set; }
         public decimal Total { get; set; }
+
 
         public Cliente? Cliente { get; set; }
         public ICollection<DetalleFactura> DetallesFactura { get; set; } = new List<DetalleFactura>();

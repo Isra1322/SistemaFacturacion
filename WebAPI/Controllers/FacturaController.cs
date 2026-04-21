@@ -29,11 +29,12 @@ namespace SistemaFacturacion.WebAPI.Controllers
             try
             {
                 var numeroFactura = await _facturaService.CrearFacturaAsync(dto);
-            return Ok(new
-            {
-                mensaje = "Factura creada correctamente",
-                numeroFactura = numeroFactura
-            });
+
+                return Ok(new
+                {
+                    mensaje = "Factura creada correctamente",
+                    numeroFactura = numeroFactura
+                });
             }
             catch (Exception ex)
             {
@@ -56,6 +57,8 @@ namespace SistemaFacturacion.WebAPI.Controllers
                 Cliente = factura.Cliente != null
                     ? $"{factura.Cliente.Nombre} {factura.Cliente.Apellido}"
                     : string.Empty,
+                Subtotal = factura.Subtotal,
+                Iva = factura.Iva,
                 Total = factura.Total,
                 Detalles = factura.DetallesFactura.Select(d => new DetalleFacturaResponseDto
                 {
@@ -113,6 +116,8 @@ namespace SistemaFacturacion.WebAPI.Controllers
                 Cliente = factura.Cliente != null
                     ? $"{factura.Cliente.Nombre} {factura.Cliente.Apellido}"
                     : string.Empty,
+                Subtotal = factura.Subtotal,
+                Iva = factura.Iva,
                 Total = factura.Total,
                 Detalles = factura.DetallesFactura.Select(d => new DetalleFacturaResponseDto
                 {

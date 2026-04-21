@@ -36,6 +36,15 @@ namespace SistemaFacturacion.Infrastructure.Persistence
                 entity.ToTable("Facturas");
                 entity.HasKey(e => e.IdFactura);
 
+                entity.Property(e => e.Subtotal)
+                    .HasColumnType("decimal(18,2)");
+
+                entity.Property(e => e.Iva)
+                    .HasColumnType("decimal(18,2)");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("decimal(18,2)");
+
                 entity.HasOne(e => e.Cliente)
                     .WithMany(c => c.Facturas)
                     .HasForeignKey(e => e.IdCliente);
