@@ -103,19 +103,19 @@ buscarProductoInput.addEventListener("input", async () => {
 // Agregar producto al detalle
 btnAgregarProducto.addEventListener("click", () => {
   if (!productoSeleccionado) {
-    alert("Selecciona un producto");
+    mostrarToast("Selecciona un producto", "warning");
     return;
   }
 
   const cantidad = parseInt(cantidadProductoInput.value);
 
   if (!cantidad || cantidad <= 0) {
-    alert("Ingresa una cantidad válida");
+    mostrarToast("Ingresa una cantidad válida", "warning");
     return;
   }
 
   if (cantidad > productoSeleccionado.stock) {
-    alert("La cantidad no puede superar el stock disponible");
+    mostrarToast("La cantidad no puede superar el stock disponible", "error");
     return;
   }
 
@@ -123,7 +123,7 @@ btnAgregarProducto.addEventListener("click", () => {
 
   if (existente) {
     if (existente.cantidad + cantidad > productoSeleccionado.stock) {
-      alert("La cantidad total supera el stock disponible");
+      mostrarToast("La cantidad total supera el stock disponible", "error");
       return;
     }
 
@@ -180,12 +180,12 @@ window.eliminarDetalle = function(index) {
 
 btnGuardarFactura.addEventListener("click", async () => {
   if (!clienteSeleccionado) {
-    alert("Selecciona un cliente");
+    mostrarToast("Selecciona un cliente", "warning");
     return;
   }
 
   if (detalleFactura.length === 0) {
-    alert("Agrega al menos un producto");
+    mostrarToast("Agrega al menos un producto", "warning");
     return;
   }
 
@@ -212,7 +212,7 @@ btnGuardarFactura.addEventListener("click", async () => {
 
     const data = await response.json();
 
-    alert("Factura guardada correctamente");
+    mostrarToast("Factura guardada correctamente", "success");
 
     if (data.numeroFactura) {
       window.open(`http://localhost:5161/api/Factura/pdf/${data.numeroFactura}`, "_blank");
@@ -227,6 +227,6 @@ btnGuardarFactura.addEventListener("click", async () => {
     buscarClienteInput.disabled = false;
     resultadosClientes.innerHTML = "";
   } catch (error) {
-    alert(error.message);
+    mostrarToast(error.message, "error");
   }
 });

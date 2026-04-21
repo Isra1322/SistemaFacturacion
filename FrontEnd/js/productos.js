@@ -41,9 +41,9 @@ productoForm.addEventListener("submit", async (e) => {
     productoForm.reset();
     paginaActual = 1;
     cargarProductos();
-    alert("Producto guardado correctamente");
+    mostrarToast("Producto guardado correctamente", "success");
   } catch (error) {
-    alert(error.message);
+    mostrarToast(error.message, "error");
   }
 });
 

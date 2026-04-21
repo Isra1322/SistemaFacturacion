@@ -7,7 +7,7 @@ async function buscarPorNumero() {
   const numero = document.getElementById("buscarNumero").value;
 
   if (!numero) {
-    alert("Ingresa un número");
+    mostrarToast("Ingresa un número de factura", "warning");
     return;
   }
 
@@ -19,7 +19,7 @@ async function buscarPorNumero() {
 
     agregarFila(data);
   } catch {
-    alert("Factura no encontrada");
+    mostrarToast("Factura no encontrada", "error");
   }
 }
 
@@ -28,7 +28,7 @@ async function buscarPorFecha() {
   const fecha = document.getElementById("buscarFecha").value;
 
   if (!fecha) {
-    alert("Selecciona una fecha");
+    mostrarToast("Selecciona una fecha", "warning");
     return;
   }
 
@@ -40,7 +40,7 @@ async function buscarPorFecha() {
 
     data.datos.forEach(f => agregarFila(f));
   } catch {
-    alert("Error al buscar");
+    mostrarToast("Error al buscar facturas", "error");
   }
 }
 

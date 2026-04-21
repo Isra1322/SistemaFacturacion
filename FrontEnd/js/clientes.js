@@ -43,9 +43,9 @@ clienteForm.addEventListener("submit", async (e) => {
     clienteForm.reset();
     paginaActual = 1;
     cargarClientes();
-    alert("Cliente guardado correctamente");
+    mostrarToast("Cliente guardado correctamente", "success");
   } catch (error) {
-    alert(error.message);
+    mostrarToast(error.message, "error");
   }
 });
 
