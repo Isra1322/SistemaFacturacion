@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva Factura</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Nueva Factura</h1>
+  </header>
+
+  <nav class="top-nav">
+  <div class="top-nav-container">
+    <a href="../index.html">Inicio</a>
+    <a href="./clientes.html">Clientes</a>
+    <a href="./productos.html">Productos</a>
+    <a href="./factura.html">Nueva Factura</a>
+    <a href="./facturas.html">Consultar Facturas</a>
+  </div>
+</nav>
+
+  <main class="container">
+    <section class="form-section">
+      <h2>Seleccionar Cliente</h2>
+      <input type="text" id="buscarCliente" placeholder="Buscar cliente por nombre, apellido o correo">
+      <div id="resultadosClientes" class="resultados-busqueda"></div>
+
+      <div class="seleccionado-box">
+      <strong>Cliente seleccionado:</strong>
+      <span id="clienteSeleccionadoTexto">Ninguno</span>
+      <button id="btnCambiarCliente" style="margin-left:10px;">Cambiar</button>
+</div>
+    </section>
+
+    <section class="form-section">
+      <h2>Agregar Producto</h2>
+      <input type="text" id="buscarProducto" placeholder="Buscar producto por nombre">
+      <div id="resultadosProductos" class="resultados-busqueda"></div>
+
+      <div class="seleccionado-box">
+        <p><strong>Producto:</strong> <span id="productoNombre">Ninguno</span></p>
+        <p><strong>Precio:</strong> <span id="productoPrecio">$0.00</span></p>
+        <p><strong>Stock:</strong> <span id="productoStock">0</span></p>
+      </div>
+
+      <div class="cantidad-box">
+        <input type="number" id="cantidadProducto" placeholder="Cantidad" min="1">
+        <button id="btnAgregarProducto">Agregar al detalle</button>
+      </div>
+    </section>
+
+    <section class="list-section">
+      <h2>Detalle de la Factura</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID Producto</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="detalleFacturaBody"></tbody>
+      </table>
+
+      <div class="total-box">
+        <strong>Total:</strong> <span id="totalFactura">$0.00</span>
+        <button id="btnGuardarFactura">Guardar Factura</button>
+      </div>
+
+      <br>
+      <a href="../index.html">Volver al inicio</a>
+    </section>
+  </main>
+
+  <script src="../js/factura.js"></script>
+</body>
+</html>

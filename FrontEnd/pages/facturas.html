@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultar Facturas</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Consulta de Facturas</h1>
+  </header>
+
+  <nav class="top-nav">
+    <div class="top-nav-container">
+      <a href="../index.html">Inicio</a>
+      <a href="./clientes.html">Clientes</a>
+      <a href="./productos.html">Productos</a>
+      <a href="./factura.html">Nueva Factura</a>
+      <a href="./facturas.html">Consultar Facturas</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="page-header">
+      <div>
+        <h2>Historial de Facturas</h2>
+        <p>Busca facturas por número o por fecha e imprime el PDF directamente.</p>
+      </div>
+      <span class="badge">Módulo activo</span>
+    </section>
+
+    <section class="form-section">
+      <div class="page-header">
+        <div>
+          <h2>Filtros de búsqueda</h2>
+          <p>Consulta rápida de facturas registradas.</p>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <input type="number" id="buscarNumero" placeholder="Buscar por número de factura">
+        <button onclick="buscarPorNumero()">Buscar</button>
+      </div>
+
+      <br>
+
+      <div class="action-row">
+        <input type="date" id="buscarFecha">
+        <button onclick="buscarPorFecha()">Buscar por fecha</button>
+      </div>
+    </section>
+
+    <section class="list-section">
+      <div class="page-header">
+        <div>
+          <h2>Resultados</h2>
+          <p>Facturas encontradas según el criterio de búsqueda.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Total</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="tablaFacturas">
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/facturas.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Clientes</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Gestión de Clientes</h1>
+  </header>
+
+  <nav class="top-nav">
+  <div class="top-nav-container">
+    <a href="../index.html">Inicio</a>
+    <a href="./clientes.html">Clientes</a>
+    <a href="./productos.html">Productos</a>
+    <a href="./factura.html">Nueva Factura</a>
+    <a href="./facturas.html">Consultar Facturas</a>
+  </div>
+</nav>
+
+  <main class="container">
+  <section class="page-header">
+    <div>
+      <h2>Administración de Clientes</h2>
+      <p>Registra, busca y visualiza clientes del sistema.</p>
+    </div>
+    <span class="badge">Módulo activo</span>
+  </section>
+
+  <section class="form-section">
+    <h2>Registrar Cliente</h2>
+    <form id="clienteForm">
+      <input type="text" id="nombre" placeholder="Nombre" required>
+      <input type="text" id="apellido" placeholder="Apellido" required>
+      <input type="text" id="direccion" placeholder="Dirección" required>
+      <input type="text" id="telefono" placeholder="Teléfono" required>
+      <input type="email" id="correo" placeholder="Correo" required>
+      <button type="submit">Guardar Cliente</button>
+    </form>
+  </section>
+
+  <section class="list-section">
+    <div class="page-header">
+      <div>
+        <h2>Listado de Clientes</h2>
+        <p>Búsqueda dinámica con paginación.</p>
+      </div>
+    </div>
+
+    <input type="text" id="buscarCliente" placeholder="Buscar cliente por nombre, apellido o correo">
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+          </tr>
+        </thead>
+        <tbody id="clientesBody"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button id="btnAnterior">Anterior</button>
+      <span id="paginaActual">Página 1</span>
+      <button id="btnSiguiente">Siguiente</button>
+    </div>
+  </section>
+</main>
+
+  <script src="../js/clientes.js"></script>
+</body>
+</html>

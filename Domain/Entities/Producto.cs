@@ -1,0 +1,12 @@
+namespace SistemaFacturacion.Domain.Entities
+{
+    public class Producto
+    {
+        public int IdProducto { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+        public decimal Precio { get; set; }
+        public int Stock { get; set; }
+
+        public ICollection<DetalleFactura> DetallesFactura { get; set; } = new List<DetalleFactura>();
+    }
+}
