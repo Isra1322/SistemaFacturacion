@@ -2,7 +2,7 @@ const API = "http://localhost:5161/api/Factura";
 
 const tabla = document.getElementById("tablaFacturas");
 
-// 🔹 Buscar por número
+// Buscar por número
 async function buscarPorNumero() {
   const numero = document.getElementById("buscarNumero").value;
 
@@ -13,17 +13,21 @@ async function buscarPorNumero() {
 
   try {
     const res = await fetch(`${API}/${numero}`);
+
+    if (!res.ok) {
+      throw new Error("Factura no encontrada");
+    }
+
     const data = await res.json();
 
     tabla.innerHTML = "";
-
     agregarFila(data);
-  } catch {
-    mostrarToast("Factura no encontrada", "error");
+  } catch (error) {
+    mostrarToast(error.message, "error");
   }
 }
 
-// 🔹 Buscar por fecha
+// Buscar por fecha
 async function buscarPorFecha() {
   const fecha = document.getElementById("buscarFecha").value;
 
@@ -34,36 +38,71 @@ async function buscarPorFecha() {
 
   try {
     const res = await fetch(`${API}/fecha?fecha=${fecha}&pagina=1&tamanioPagina=10`);
+
+    if (!res.ok) {
+      throw new Error("Error al buscar facturas");
+    }
+
     const data = await res.json();
 
     tabla.innerHTML = "";
 
+    if (!data.datos || data.datos.length === 0) {
+      tabla.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty-state">No se encontraron facturas para esa fecha</td>
+        </tr>
+      `;
+      return;
+    }
+
     data.datos.forEach(f => agregarFila(f));
-  } catch {
-    mostrarToast("Error al buscar facturas", "error");
+  } catch (error) {
+    mostrarToast(error.message, "error");
   }
 }
 
-// 🔹 agregar fila a la tabla
+// Agregar fila a la tabla
 function agregarFila(factura) {
   const fila = document.createElement("tr");
 
   fila.innerHTML = `
     <td>${factura.numeroFactura}</td>
-    <td>${factura.fecha}</td>
+    <td>${formatearFecha(factura.fecha)}</td>
     <td>${factura.cliente}</td>
-    <td>$${factura.total}</td>
+    <td>$${Number(factura.total).toFixed(2)}</td>
     <td>
-      <button onclick="verPDF(${factura.numeroFactura})">
-        Imprimir
-      </button>
+      <div class="action-row" style="justify-content:center;">
+        <button class="small-button" onclick="verFactura(${factura.numeroFactura})">Ver</button>
+        <button class="small-button" onclick="verPDF(${factura.numeroFactura})">Imprimir</button>
+      </div>
     </td>
   `;
 
   tabla.appendChild(fila);
 }
 
-// 🔹 abrir PDF
+// Ver factura
+function verFactura(numero) {
+  window.location.href = `./ver-factura.html?numero=${numero}`;
+}
+
+// Abrir PDF
 function verPDF(numero) {
   window.open(`http://localhost:5161/api/Factura/pdf/${numero}`, "_blank");
+}
+
+// Formatear fecha
+function formatearFecha(fechaTexto) {
+  const fecha = new Date(fechaTexto);
+
+  if (isNaN(fecha)) return fechaTexto;
+
+  return fecha.toLocaleString("es-EC", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 }

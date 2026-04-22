@@ -12,68 +12,68 @@
   </header>
 
   <nav class="top-nav">
-  <div class="top-nav-container">
-    <a href="../index.html">Inicio</a>
-    <a href="./clientes.html">Clientes</a>
-    <a href="./productos.html">Productos</a>
-    <a href="./factura.html">Nueva Factura</a>
-    <a href="./facturas.html">Consultar Facturas</a>
-  </div>
-</nav>
+    <div class="top-nav-container">
+      <a href="../index.html">Inicio</a>
+      <a href="./clientes.html">Clientes</a>
+      <a href="./productos.html">Productos</a>
+      <a href="./factura.html">Nueva Factura</a>
+      <a href="./facturas.html">Consultar Facturas</a>
+    </div>
+  </nav>
 
   <main class="container">
-  <section class="page-header">
-    <div>
-      <h2>Administración de Productos</h2>
-      <p>Registra y controla los productos disponibles para facturación.</p>
-    </div>
-    <span class="badge">Módulo activo</span>
-  </section>
-
-  <section class="form-section">
-    <h2>Registrar Producto</h2>
-    <form id="productoForm">
-      <input type="text" id="nombre" placeholder="Nombre del producto" required>
-      <input type="number" id="precio" placeholder="Precio" step="0.01" min="0.01" required>
-      <input type="number" id="stock" placeholder="Stock" min="0" required>
-      <button type="submit">Guardar Producto</button>
-    </form>
-  </section>
-
-  <section class="list-section">
-    <div class="page-header">
+    <section class="page-header">
       <div>
-        <h2>Listado de Productos</h2>
-        <p>Búsqueda rápida con paginación.</p>
+        <h2>Administración de Productos</h2>
+        <p>Registra y controla los productos disponibles para facturación.</p>
       </div>
-    </div>
+      <span class="badge">Módulo activo</span>
+    </section>
 
-    <input type="text" id="buscarProducto" placeholder="Buscar producto por nombre">
+    <section class="form-section">
+      <h2>Registrar Producto</h2>
+      <form id="productoForm" novalidate>
+        <input type="text" id="nombre" placeholder="Nombre del producto" required>
+        <input type="number" id="precio" placeholder="Precio" step="0.01" required>
+        <input type="number" id="stock" placeholder="Stock" min="0" required>
+        <button type="submit">Guardar Producto</button>
+      </form>
+    </section>
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-          </tr>
-        </thead>
-        <tbody id="productosBody"></tbody>
-      </table>
-    </div>
+    <section class="list-section">
+      <div class="page-header">
+        <div>
+          <h2>Listado de Productos</h2>
+          <p>Búsqueda rápida con paginación.</p>
+        </div>
+      </div>
 
-    <div class="pagination">
-      <button id="btnAnterior">Anterior</button>
-      <span id="paginaActual">Página 1</span>
-      <button id="btnSiguiente">Siguiente</button>
-    </div>
-  </section>
-</main>
+      <input type="text" id="buscarProducto" placeholder="Buscar producto por nombre">
 
-<div id="toast-container"></div>
-<script src="../js/toast.js"></script>
-<script src="../js/productos.js"></script>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody id="productosBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button id="btnAnterior">Anterior</button>
+        <span id="paginaActual">Página 1</span>
+        <button id="btnSiguiente">Siguiente</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast-container"></div>
+  <script src="../js/toast.js"></script>
+  <script src="../js/productos.js"></script>
 </body>
 </html>

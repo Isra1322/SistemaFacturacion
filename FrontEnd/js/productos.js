@@ -19,10 +19,40 @@ document.addEventListener("DOMContentLoaded", () => {
 productoForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const nombre = document.getElementById("nombre").value.trim();
+  const precio = parseFloat(document.getElementById("precio").value);
+  const stock = parseInt(document.getElementById("stock").value);
+
+  // Validaciones frontend
+  if (!nombre) {
+    mostrarToast("El nombre del producto es obligatorio", "warning");
+    return;
+  }
+
+  if (isNaN(precio)) {
+    mostrarToast("Ingresa un precio válido", "warning");
+    return;
+  }
+
+  if (precio <= 0) {
+    mostrarToast("El precio debe ser mayor a 0", "warning");
+    return;
+  }
+
+  if (isNaN(stock)) {
+    mostrarToast("Ingresa un stock válido", "warning");
+    return;
+  }
+
+  if (stock < 0) {
+    mostrarToast("El stock no puede ser negativo", "warning");
+    return;
+  }
+
   const producto = {
-    nombre: document.getElementById("nombre").value.trim(),
-    precio: parseFloat(document.getElementById("precio").value),
-    stock: parseInt(document.getElementById("stock").value)
+    nombre,
+    precio,
+    stock
   };
 
   try {
@@ -35,7 +65,16 @@ productoForm.addEventListener("submit", async (e) => {
     });
 
     if (!response.ok) {
-      throw new Error("No se pudo guardar el producto");
+      let mensajeError = "No se pudo guardar el producto";
+
+      try {
+        const errorData = await response.json();
+        mensajeError = errorData.mensaje || errorData.error || mensajeError;
+      } catch {
+        // Si no viene JSON, dejamos el mensaje genérico
+      }
+
+      throw new Error(mensajeError);
     }
 
     productoForm.reset();
@@ -83,6 +122,17 @@ async function cargarProductos() {
     totalPaginas = data.totalPaginas || 1;
     paginaActualTexto.textContent = `Página ${paginaActual} de ${totalPaginas}`;
 
+    if (!data.datos || data.datos.length === 0) {
+      productosBody.innerHTML = `
+        <tr>
+          <td colspan="4" class="empty-state">No se encontraron productos</td>
+        </tr>
+      `;
+      btnAnterior.disabled = true;
+      btnSiguiente.disabled = true;
+      return;
+    }
+
     data.datos.forEach(producto => {
       const fila = `
         <tr>
@@ -100,7 +150,7 @@ async function cargarProductos() {
   } catch (error) {
     productosBody.innerHTML = `
       <tr>
-        <td colspan="4">Error al cargar productos</td>
+        <td colspan="4" class="empty-state">Error al cargar productos</td>
       </tr>
     `;
   }

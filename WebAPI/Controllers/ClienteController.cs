@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SistemaFacturacion.Application.Interfaces;
 using SistemaFacturacion.Domain.Entities;
 
@@ -55,8 +56,24 @@ namespace SistemaFacturacion.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Agregar([FromBody] Cliente cliente)
         {
-            await _clienteRepository.AgregarAsync(cliente);
-            return Ok(new { mensaje = "Cliente agregado correctamente" });
+            try
+            {
+                await _clienteRepository.AgregarAsync(cliente);
+                return Ok(new { mensaje = "Cliente agregado correctamente" });
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("UQ_Clientes_Correo"))
+                {
+                    return BadRequest(new { mensaje = "El correo ya está registrado" });
+                }
+
+                return BadRequest(new { mensaje = "No se pudo guardar el cliente" });
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { mensaje = "Ocurrió un error inesperado al guardar el cliente" });
+            }
         }
 
         [HttpPut("{id}")]

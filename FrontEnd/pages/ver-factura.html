@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ver Factura</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Detalle de Factura</h1>
+  </header>
+
+  <nav class="top-nav">
+    <div class="top-nav-container">
+      <a href="../index.html">Inicio</a>
+      <a href="./clientes.html">Clientes</a>
+      <a href="./productos.html">Productos</a>
+      <a href="./factura.html">Nueva Factura</a>
+      <a href="./facturas.html">Consultar Facturas</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="page-header">
+      <div>
+        <h2>Factura</h2>
+        <p>Visualización detallada de la factura seleccionada.</p>
+      </div>
+      <span class="badge">Solo lectura</span>
+    </section>
+
+    <section class="form-section">
+      <h2>Datos generales</h2>
+      <div class="seleccionado-box">
+        <p><strong>Número de factura:</strong> <span id="numeroFactura">-</span></p>
+      </div>
+      <br>
+      <div class="seleccionado-box">
+        <p><strong>Fecha:</strong> <span id="fechaFactura">-</span></p>
+      </div>
+      <br>
+      <div class="seleccionado-box">
+        <p><strong>Cliente:</strong> <span id="clienteFactura">-</span></p>
+      </div>
+    </section>
+
+    <section class="list-section">
+      <h2>Detalle de la Factura</h2>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Total Línea</th>
+            </tr>
+          </thead>
+          <tbody id="detalleFacturaBody"></tbody>
+        </table>
+      </div>
+
+      <div class="total-box">
+        <p><strong>Subtotal:</strong> <span id="subtotalFactura">$0.00</span></p>
+        <p><strong>IVA (15%):</strong> <span id="ivaFactura">$0.00</span></p>
+        <p><strong>Total:</strong> <span id="totalFactura">$0.00</span></p>
+      </div>
+
+      <div class="action-row" style="justify-content: flex-end; margin-top: 20px;">
+        <button id="btnImprimirFactura">Imprimir PDF</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast-container"></div>
+  <script src="../js/toast.js"></script>
+  <script src="../js/ver-factura.js"></script>
+</body>
+</html>

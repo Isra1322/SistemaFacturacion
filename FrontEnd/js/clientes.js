@@ -37,8 +37,9 @@ clienteForm.addEventListener("submit", async (e) => {
     });
 
     if (!response.ok) {
-      throw new Error("No se pudo guardar el cliente");
-    }
+    const errorData = await response.json();
+    throw new Error(errorData.mensaje || "No se pudo guardar el cliente");
+}
 
     clienteForm.reset();
     paginaActual = 1;
