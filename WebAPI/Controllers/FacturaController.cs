@@ -57,6 +57,9 @@ namespace SistemaFacturacion.WebAPI.Controllers
                 Cliente = factura.Cliente != null
                     ? $"{factura.Cliente.Nombre} {factura.Cliente.Apellido}"
                     : string.Empty,
+                Correo = factura.Cliente != null ? factura.Cliente.Correo : string.Empty,
+                Telefono = factura.Cliente != null ? factura.Cliente.Telefono : string.Empty,
+                Direccion = factura.Cliente != null ? factura.Cliente.Direccion : string.Empty,
                 Subtotal = factura.Subtotal,
                 Iva = factura.Iva,
                 Total = factura.Total,
@@ -116,6 +119,9 @@ namespace SistemaFacturacion.WebAPI.Controllers
                 Cliente = factura.Cliente != null
                     ? $"{factura.Cliente.Nombre} {factura.Cliente.Apellido}"
                     : string.Empty,
+                Correo = factura.Cliente != null ? factura.Cliente.Correo : string.Empty,
+                Telefono = factura.Cliente != null ? factura.Cliente.Telefono : string.Empty,
+                Direccion = factura.Cliente != null ? factura.Cliente.Direccion : string.Empty,
                 Subtotal = factura.Subtotal,
                 Iva = factura.Iva,
                 Total = factura.Total,

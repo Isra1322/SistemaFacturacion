@@ -8,6 +8,11 @@ namespace SistemaFacturacion.Application.DTOs
         public decimal Subtotal { get; set; }
         public decimal Iva { get; set; }
         public decimal Total { get; set; }
+
+        public string Correo { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
+
         public List<DetalleFacturaResponseDto> Detalles { get; set; } = new();
     }
 }
