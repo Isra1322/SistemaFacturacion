@@ -1,4 +1,4 @@
-Para la base de datos se usa SQL Server:
+Codigo de creacion de la BD, tablas y datos iniciales (SQL Server)
 
 CREATE DATABASE SistemaFacturacionDB;
 
@@ -56,6 +56,9 @@ CREATE TABLE Facturas
         REFERENCES Clientes(IdCliente)
 );
 
+ALTER TABLE Facturas
+ADD Subtotal DECIMAL(18,2) NOT NULL DEFAULT 0,
+    Iva DECIMAL(18,2) NOT NULL DEFAULT 0;
 
 -- =========================
 -- TABLA: DetalleFactura
