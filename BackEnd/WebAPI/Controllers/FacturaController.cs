@@ -139,7 +139,6 @@ namespace SistemaFacturacion.WebAPI.Controllers
     // 🔹 Ruta fija donde se guardará el PDF
         var carpeta = @"C:\Users\stali\Desktop\Facturas";
 
-    // Crear carpeta si no existe
         if (!Directory.Exists(carpeta))
         {
             Directory.CreateDirectory(carpeta);
