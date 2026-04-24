@@ -190,5 +190,12 @@ ORDER BY F.IdFactura, D.IdDetalleFactura;
   "DefaultConnection": "Server=TU_SERVIDOR;Database=SistemaFacturacionDB;Trusted_Connection=True;TrustServerCertificate=True;"
 }
 
+## 📁 Configuración de la ruta de guardado de facturas PDF:
+La ruta donde se guardan automáticamente las facturas en PDF se encuentra definida en el archivo BackEnd\WebAPI\Controllers\FacturaController.cs, específicamente dentro del método GenerarPdf. En este método existe una línea donde se establece la carpeta de destino.
+
+Por ejemplo:
+
+var carpeta = @"C:\Users\stali\Desktop\Facturas";
+
 ## ▶️ Ejecutar el proyecto
 dotnet run
