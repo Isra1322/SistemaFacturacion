@@ -550,3 +550,21 @@ hr {
     max-width: 100%;
   }
 }
+
+.nav-link {
+  padding: 10px 18px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Hover bonito */
+.nav-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ACTIVO (como tu imagen) */
+.nav-link.active {
+  background: #dbeafe; /* azul clarito */
+  color: #2563eb;       /* azul */
+  font-weight: 600;
+}

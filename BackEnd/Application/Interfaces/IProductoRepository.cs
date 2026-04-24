@@ -8,6 +8,7 @@ namespace SistemaFacturacion.Application.Interfaces
         Task<Producto?> ObtenerPorIdAsync(int idProducto);
         Task<IEnumerable<Producto>> BuscarAsync(string textoBusqueda, int pagina, int tamanioPagina);
         Task<int> ContarBusquedaAsync(string textoBusqueda);
+        Task<bool> ExistePorNombreAsync(string nombre);
         Task AgregarAsync(Producto producto);
         Task ActualizarAsync(Producto producto);
         Task EliminarAsync(int idProducto);

@@ -56,7 +56,18 @@ async function cargarFactura(numero) {
   }
 }
 
-btnImprimirFactura.addEventListener("click", () => {
+btnImprimirFactura.addEventListener("click", async () => {
   if (!numeroFactura) return;
-  window.open(`${API_FACTURA}/pdf/${numeroFactura}`, "_blank");
+
+  try {
+    const response = await fetch(`${API_FACTURA}/pdf/${numeroFactura}`);
+
+    if (!response.ok) {
+      throw new Error("No se pudo generar el PDF");
+    }
+
+    mostrarToast("Factura guardada correctamente", "success");
+  } catch (error) {
+    mostrarToast(error.message, "error");
+  }
 });

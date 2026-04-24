@@ -55,7 +55,15 @@ namespace SistemaFacturacion.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Agregar([FromBody] Producto producto)
         {
+            var existe = await _productoRepository.ExistePorNombreAsync(producto.Nombre);
+
+            if (existe)
+        {
+            return BadRequest(new { error = "Ya existe un producto con ese nombre" });
+        }
+
             await _productoRepository.AgregarAsync(producto);
+
             return Ok(new { mensaje = "Producto agregado correctamente" });
         }
 

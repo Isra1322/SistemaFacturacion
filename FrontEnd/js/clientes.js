@@ -8,9 +8,14 @@ const btnSiguiente = document.getElementById("btnSiguiente");
 const paginaActualTexto = document.getElementById("paginaActual");
 
 let paginaActual = 1;
-const tamanioPagina = 5;
+const tamanioPagina = 10;
 let totalPaginas = 1;
 let textoBusqueda = "";
+
+// 🔹 SOLO NÚMEROS EN TELÉFONO
+document.getElementById("telefono").addEventListener("input", (e) => {
+  e.target.value = e.target.value.replace(/\D/g, "");
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarClientes();
@@ -19,12 +24,31 @@ document.addEventListener("DOMContentLoaded", () => {
 clienteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const nombre = document.getElementById("nombre").value.trim();
+  const apellido = document.getElementById("apellido").value.trim();
+  const direccion = document.getElementById("direccion").value.trim();
+  const telefono = document.getElementById("telefono").value.trim();
+  const correo = document.getElementById("correo").value.trim();
+
+  // 🔹 VALIDACIONES
+  if (!nombre || !apellido || !direccion || !telefono || !correo) {
+    mostrarToast("Todos los campos son obligatorios", "warning");
+    return;
+  }
+
+  // 🔹 VALIDAR TELÉFONO ECUADOR
+  const telefonoRegex = /^09\d{8}$/;
+  if (!telefonoRegex.test(telefono)) {
+    mostrarToast("Ingrese un número válido (Ej: 0991234567)", "warning");
+    return;
+  }
+
   const cliente = {
-    nombre: document.getElementById("nombre").value.trim(),
-    apellido: document.getElementById("apellido").value.trim(),
-    direccion: document.getElementById("direccion").value.trim(),
-    telefono: document.getElementById("telefono").value.trim(),
-    correo: document.getElementById("correo").value.trim()
+    nombre,
+    apellido,
+    direccion,
+    telefono,
+    correo
   };
 
   try {
@@ -37,14 +61,23 @@ clienteForm.addEventListener("submit", async (e) => {
     });
 
     if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.mensaje || "No se pudo guardar el cliente");
-}
+      let mensajeError = "No se pudo guardar el cliente";
+
+      try {
+        const errorData = await response.json();
+        mensajeError = errorData.mensaje || errorData.error || mensajeError;
+      } catch {
+        // fallback
+      }
+
+      throw new Error(mensajeError);
+    }
 
     clienteForm.reset();
     paginaActual = 1;
     cargarClientes();
     mostrarToast("Cliente guardado correctamente", "success");
+
   } catch (error) {
     mostrarToast(error.message, "error");
   }
@@ -86,6 +119,18 @@ async function cargarClientes() {
     totalPaginas = data.totalPaginas || 1;
     paginaActualTexto.textContent = `Página ${paginaActual} de ${totalPaginas}`;
 
+    if (!data.datos || data.datos.length === 0) {
+      clientesBody.innerHTML = `
+        <tr>
+          <td colspan="6" class="empty-state">No se encontraron clientes</td>
+        </tr>
+      `;
+
+      btnAnterior.disabled = true;
+      btnSiguiente.disabled = true;
+      return;
+    }
+
     data.datos.forEach(cliente => {
       const fila = `
         <tr>
@@ -102,10 +147,11 @@ async function cargarClientes() {
 
     btnAnterior.disabled = paginaActual === 1;
     btnSiguiente.disabled = paginaActual >= totalPaginas;
+
   } catch (error) {
     clientesBody.innerHTML = `
       <tr>
-        <td colspan="6">Error al cargar clientes</td>
+        <td colspan="6" class="empty-state">Error al cargar clientes</td>
       </tr>
     `;
   }

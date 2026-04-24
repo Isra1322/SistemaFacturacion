@@ -8,7 +8,7 @@ const btnSiguiente = document.getElementById("btnSiguiente");
 const paginaActualTexto = document.getElementById("paginaActual");
 
 let paginaActual = 1;
-const tamanioPagina = 5;
+const tamanioPagina = 10;
 let totalPaginas = 1;
 let textoBusqueda = "";
 
@@ -64,18 +64,18 @@ productoForm.addEventListener("submit", async (e) => {
       body: JSON.stringify(producto)
     });
 
-    if (!response.ok) {
-      let mensajeError = "No se pudo guardar el producto";
+if (!response.ok) {
+  let mensajeError = "No se pudo guardar el producto";
 
-      try {
-        const errorData = await response.json();
-        mensajeError = errorData.mensaje || errorData.error || mensajeError;
-      } catch {
-        // Si no viene JSON, dejamos el mensaje genérico
-      }
+  try {
+    const errorData = await response.json();
+    mensajeError = errorData.error || errorData.mensaje || mensajeError;
+  } catch {
+    mensajeError = "No se pudo leer el detalle del error";
+  }
 
-      throw new Error(mensajeError);
-    }
+  throw new Error(mensajeError);
+}
 
     productoForm.reset();
     paginaActual = 1;

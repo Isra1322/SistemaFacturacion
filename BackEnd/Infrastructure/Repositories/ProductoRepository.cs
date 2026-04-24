@@ -55,6 +55,12 @@ namespace SistemaFacturacion.Infrastructure.Repositories
             return await query.CountAsync();
         }
 
+    public async Task<bool> ExistePorNombreAsync(string nombre)
+        {
+            return await _context.Productos
+            .AnyAsync(p => p.Nombre.ToLower() == nombre.ToLower());
+        }
+
         public async Task AgregarAsync(Producto producto)
         {
             await _context.Productos.AddAsync(producto);

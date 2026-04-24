@@ -25,39 +25,43 @@ namespace SistemaFacturacion.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.IdCliente == idCliente);
         }
 
-        public async Task<IEnumerable<Cliente>> BuscarAsync(string textoBusqueda, int pagina, int tamanioPagina)
-        {
-            var query = _context.Clientes.AsQueryable();
+public async Task<IEnumerable<Cliente>> BuscarAsync(string textoBusqueda, int pagina, int tamanioPagina)
+{
+    var query = _context.Clientes.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(textoBusqueda))
-            {
-                query = query.Where(c =>
-                    c.Nombre.Contains(textoBusqueda) ||
-                    c.Apellido.Contains(textoBusqueda) ||
-                    c.Correo.Contains(textoBusqueda));
-            }
+    if (!string.IsNullOrWhiteSpace(textoBusqueda))
+    {
+        textoBusqueda = textoBusqueda.ToLower();
 
-            return await query
-                .OrderBy(c => c.IdCliente)
-                .Skip((pagina - 1) * tamanioPagina)
-                .Take(tamanioPagina)
-                .ToListAsync();
-        }
+        query = query.Where(c =>
+            c.Nombre.ToLower().Contains(textoBusqueda) ||
+            c.Apellido.ToLower().Contains(textoBusqueda) ||
+            c.Correo.ToLower().Contains(textoBusqueda));
+    }
 
-        public async Task<int> ContarBusquedaAsync(string textoBusqueda)
-        {
-            var query = _context.Clientes.AsQueryable();
+    return await query
+        .OrderBy(c => c.IdCliente)
+        .Skip((pagina - 1) * tamanioPagina)
+        .Take(tamanioPagina)
+        .ToListAsync();
+}
 
-            if (!string.IsNullOrWhiteSpace(textoBusqueda))
-            {
-                query = query.Where(c =>
-                    c.Nombre.Contains(textoBusqueda) ||
-                    c.Apellido.Contains(textoBusqueda) ||
-                    c.Correo.Contains(textoBusqueda));
-            }
+public async Task<int> ContarBusquedaAsync(string textoBusqueda)
+{
+    var query = _context.Clientes.AsQueryable();
 
-            return await query.CountAsync();
-        }
+    if (!string.IsNullOrWhiteSpace(textoBusqueda))
+    {
+        textoBusqueda = textoBusqueda.ToLower();
+
+        query = query.Where(c =>
+            c.Nombre.ToLower().Contains(textoBusqueda) ||
+            c.Apellido.ToLower().Contains(textoBusqueda) ||
+            c.Correo.ToLower().Contains(textoBusqueda));
+    }
+
+    return await query.CountAsync();
+}
 
         public async Task AgregarAsync(Cliente cliente)
         {

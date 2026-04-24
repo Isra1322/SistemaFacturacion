@@ -219,10 +219,9 @@ btnGuardarFactura.addEventListener("click", async () => {
 
     const data = await response.json();
 
-    mostrarToast("Factura guardada correctamente", "success");
-
     if (data.numeroFactura) {
-      window.open(`http://localhost:5161/api/Factura/pdf/${data.numeroFactura}`, "_blank");
+    await fetch(`http://localhost:5161/api/Factura/pdf/${data.numeroFactura}`);
+    mostrarToast("Factura guardada y PDF generado correctamente", "success");
     }
 
     // limpiar todo
