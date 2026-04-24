@@ -1,9 +1,38 @@
-Codigo de creacion de la BD, tablas y datos iniciales (SQL Server)
+# Sistema de Facturación - UTA Tech
 
+Proyecto desarrollado con ASP.NET Core + SQL Server + JavaScript (Vanilla).
+
+Permite:
+- Gestión de clientes
+- Gestión de productos
+- Creación de facturas
+- Consulta de facturas
+- Generación de PDF
+  
+⚙️ Requisitos
+- .NET SDK (recomendado 8 o superior)
+- SQL Server
+- Visual Studio / VS Code
+- Navegador web
+
+## 📦 Instalación del Backend (Terminal de VS Code)
+- dotnet new webapi    =>   Si no funciona "dotnet new webapi --force"
+- dotnet add package Microsoft.EntityFrameworkCore
+- dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+- dotnet add package Microsoft.EntityFrameworkCore.Tools
+- dotnet add package Swashbuckle.AspNetCore
+
+## 🗄️ Configuración de la Base de Datos
+```sql
+
+-- =========================
+-- CREAR BASE DE DATOS
+-- =========================
 CREATE DATABASE SistemaFacturacionDB;
+GO
 
 USE SistemaFacturacionDB;
-
+GO
 
 -- =========================
 -- TABLA: Clientes
@@ -15,14 +44,10 @@ CREATE TABLE Clientes
     Apellido NVARCHAR(100) NOT NULL,
     Direccion NVARCHAR(200) NOT NULL,
     Telefono NVARCHAR(20) NOT NULL,
-    Correo NVARCHAR(100) NOT NULL
+    Correo NVARCHAR(100) NOT NULL,
+
+    CONSTRAINT UQ_Clientes_Correo UNIQUE (Correo)
 );
-
-Select * from Clientes;
-Delete from clientes where IdCliente=7;
-
-ALTER TABLE Clientes
-ADD CONSTRAINT UQ_Clientes_Correo UNIQUE (Correo);
 
 -- =========================
 -- TABLA: Productos
@@ -34,10 +59,10 @@ CREATE TABLE Productos
     Precio DECIMAL(18,2) NOT NULL,
     Stock INT NOT NULL,
 
+    CONSTRAINT UQ_Productos_Nombre UNIQUE (Nombre),
     CONSTRAINT CHK_Productos_Precio CHECK (Precio > 0),
     CONSTRAINT CHK_Productos_Stock CHECK (Stock >= 0)
 );
-
 
 -- =========================
 -- TABLA: Facturas
@@ -48,17 +73,17 @@ CREATE TABLE Facturas
     NumeroFactura INT NOT NULL,
     Fecha DATETIME NOT NULL DEFAULT GETDATE(),
     IdCliente INT NOT NULL,
+
+    Subtotal DECIMAL(18,2) NOT NULL DEFAULT 0,
+    Iva DECIMAL(18,2) NOT NULL DEFAULT 0,
     Total DECIMAL(18,2) NOT NULL DEFAULT 0,
 
     CONSTRAINT UQ_Facturas_NumeroFactura UNIQUE (NumeroFactura),
     CONSTRAINT CHK_Facturas_Total CHECK (Total >= 0),
+
     CONSTRAINT FK_Facturas_Clientes FOREIGN KEY (IdCliente)
         REFERENCES Clientes(IdCliente)
 );
-
-ALTER TABLE Facturas
-ADD Subtotal DECIMAL(18,2) NOT NULL DEFAULT 0,
-    Iva DECIMAL(18,2) NOT NULL DEFAULT 0;
 
 -- =========================
 -- TABLA: DetalleFactura
@@ -83,11 +108,8 @@ CREATE TABLE DetalleFactura
         REFERENCES Productos(IdProducto)
 );
 
---------------------------------------------------------------
-USE SistemaFacturacionDB;
-
 -- =========================
--- CLIENTES
+-- DATOS INICIALES: CLIENTES
 -- =========================
 INSERT INTO Clientes (Nombre, Apellido, Direccion, Telefono, Correo)
 VALUES 
@@ -98,7 +120,7 @@ VALUES
 ('Luis', 'Quispe', 'Ambato - Centro', '0995555555', 'luis.quispe@gmail.com');
 
 -- =========================
--- PRODUCTOS
+-- DATOS INICIALES: PRODUCTOS
 -- =========================
 INSERT INTO Productos (Nombre, Precio, Stock)
 VALUES
@@ -111,52 +133,41 @@ VALUES
 ('Audifonos Sony', 35.90, 12),
 ('Impresora Epson', 210.00, 5);
 
-
 -- =========================
--- FACTURAS
+-- DATOS INICIALES: FACTURAS
 -- =========================
-INSERT INTO Facturas (NumeroFactura, Fecha, IdCliente, Total)
+INSERT INTO Facturas (NumeroFactura, Fecha, IdCliente, Subtotal, Iva, Total)
 VALUES
-(1001, GETDATE(), 1, 681.00),
-(1002, GETDATE(), 2, 45.49);
-
+(1001, GETDATE(), 1, 681.00, 102.15, 783.15),
+(1002, GETDATE(), 2, 45.49, 6.82, 52.31);
 
 -- =========================
--- DETALLE FACTURA
--- FACTURA 1001
+-- DETALLE FACTURA 1001
 -- =========================
 INSERT INTO DetalleFactura (IdFactura, IdProducto, Cantidad, PrecioUnitario, TotalLinea)
 VALUES
-(1, 1, 1, 650.00, 650.00),   -- Laptop Lenovo
-(1, 2, 2, 15.50, 31.00);     -- Mouse Logitech
-
+(1, 1, 1, 650.00, 650.00),
+(1, 2, 2, 15.50, 31.00);
 
 -- =========================
--- DETALLE FACTURA
--- FACTURA 1002
+-- DETALLE FACTURA 1002
 -- =========================
 INSERT INTO DetalleFactura (IdFactura, IdProducto, Cantidad, PrecioUnitario, TotalLinea)
 VALUES
-(2, 5, 1, 9.99, 9.99),       -- Memoria USB
-(2, 3, 1, 28.75, 28.75),     -- Teclado Redragon
-(2, 2, 1, 15.50, 15.50);     -- Mouse Logitech
-GO
+(2, 5, 1, 9.99, 9.99),
+(2, 3, 1, 28.75, 28.75),
+(2, 2, 1, 15.50, 15.50);
 
----------------------------------------------------------------------------------------
--- Ver clientes
+-- =========================
+-- CONSULTAS DE PRUEBA
+-- =========================
 SELECT * FROM Clientes;
-
--- Ver productos
 SELECT * FROM Productos;
-
--- Ver facturas
 SELECT * FROM Facturas;
-
--- Ver detalle de facturas
 SELECT * FROM DetalleFactura;
 
+-- Vista completa de facturas
 SELECT 
-    F.IdFactura,
     F.NumeroFactura,
     F.Fecha,
     C.Nombre + ' ' + C.Apellido AS Cliente,
@@ -164,9 +175,20 @@ SELECT
     D.Cantidad,
     D.PrecioUnitario,
     D.TotalLinea,
+    F.Subtotal,
+    F.Iva,
     F.Total
 FROM Facturas F
 INNER JOIN Clientes C ON F.IdCliente = C.IdCliente
 INNER JOIN DetalleFactura D ON F.IdFactura = D.IdFactura
 INNER JOIN Productos P ON D.IdProducto = P.IdProducto
 ORDER BY F.IdFactura, D.IdDetalleFactura;
+```
+## 🔌 Configurar conexión
+
+"ConnectionStrings": {
+  "DefaultConnection": "Server=TU_SERVIDOR;Database=SistemaFacturacionDB;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+
+## ▶️ Ejecutar el proyecto
+dotnet run
