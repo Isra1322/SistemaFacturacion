@@ -9,11 +9,6 @@ Permite:
 - Consulta de facturas
 - Generación de PDF
   
-⚙️ Requisitos
-- .NET SDK (recomendado 8 o superior)
-- SQL Server
-- Visual Studio / VS Code
-- Navegador web
 
 ## 📦 Instalación del Backend (Terminal de VS Code)
 - dotnet new webapi    =>   Si no funciona "dotnet new webapi --force"
